@@ -12,7 +12,7 @@ class ErrorHandler(discord.Cog):
         
         em = discord.Embed(
             name="Oh No! An error occured :c",
-            description=f"```{error}```",
+            description=f"```{error}```\n\nFeel free to ping Rainy so he knows about the issue.",
             color=discord.Color.embed_background(theme='dark')
         )
 
