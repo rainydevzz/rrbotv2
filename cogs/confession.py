@@ -15,7 +15,8 @@ class Confession(discord.Cog):
     async def on_ready(self):
         setattr(self.bot, "db", await aiosqlite.connect("main.sqlite"))
         await asyncio.sleep(1)
-        await self.bot.db.execute("CREATE TABLE IF NOT EXISTS confessions (channel INTEGER, count INTEGER, guild INTEGER, logchannel INTEGER)")
+        async with self.bot.db.cursor() as cur:
+            await cur.execute("CREATE TABLE IF NOT EXISTS confessions (channel INTEGER, count INTEGER, guild INTEGER, logchannel INTEGER)")
         await self.bot.db.commit()
 
     @conf.command(name="setup")
