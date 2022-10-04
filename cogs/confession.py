@@ -22,7 +22,12 @@ class Confession(discord.Cog):
     @commands.has_permissions(administrator=True)
     async def csetup(self, ctx, channel:discord.TextChannel, logchannel:discord.TextChannel):
         async with self.bot.db.cursor() as cursor:
-            await cursor.execute("INSERT INTO confessions (channel, count, guild, logchannel) VALUES (?, ?, ?, ?)", (channel.id, 1, ctx.guild.id, logchannel.id))
+            await cursor.execute("SELECT channel FROM confessions WHERE guild = ?", (ctx.guild.id,))
+            res = await cursor.fetchone()
+            if not res:
+                await cursor.execute("INSERT INTO confessions (channel, count, guild, logchannel) VALUES (?, ?, ?, ?)", (channel.id, 1, ctx.guild.id, logchannel.id))
+            else:
+                await cursor.execute("UPDATE confessions SET channel = ?, logchannel = ? WHERE guild = ?", (channel.id, logchannel.id, ctx.guild.id))
         await self.bot.db.commit()
         await ctx.respond("Confessions Set Up! <3")
 
@@ -33,9 +38,9 @@ class Confession(discord.Cog):
             res = await cur.fetchone()
             c1, c2, co = res[0], res[1], res[2]
             if c1 is None:
-                return await ctx.respond("The confession channel has not been set up.")
+                return await ctx.respond("The confession channel has not been set up. :(")
             elif c1 != ctx.channel.id:
-                return await ctx.respond("This is not the confession channel.")
+                return await ctx.respond("This is not the confession channel. :c")
             
             em1 = discord.Embed(title=f"Confession {co}", description=confession, color=discord.Color.random())
             em1.timestamp = datetime.now()

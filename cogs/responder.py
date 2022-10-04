@@ -9,7 +9,7 @@ class Responder(discord.Cog):
 
     rcmd = discord.SlashCommandGroup(name="responder", description="responder commands")
 
-    @rcmd.command()
+    @rcmd.command(description="sets up responder.")
     @commands.has_permissions(manage_guild=True)
     async def rsetup(self, ctx, trigger_msg, response, channel:discord.TextChannel):
         async with self.bot.db.cursor() as cur:
