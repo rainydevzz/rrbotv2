@@ -10,6 +10,7 @@ class Responder(discord.Cog):
     rcmd = discord.SlashCommandGroup(name="responder", description="responder commands")
 
     @rcmd.command()
+    @commands.has_permissions(manage_guild=True)
     async def rsetup(self, ctx, trigger_msg, response, channel:discord.TextChannel):
         async with self.bot.db.cursor() as cur:
             await cur.execute("INSERT INTO responder (guild, channel, trigger, response) VALUES (?, ?, ?, ?)", (ctx.guild.id, channel.id, trigger_msg, response))
@@ -17,6 +18,7 @@ class Responder(discord.Cog):
         await ctx.respond(f"Responder set up in {channel.mention} <3")
 
     @rcmd.command(description="remove a responder by its channel.")
+    @commands.has_permissions(manage_guild=True)
     async def remove(self, ctx, channel:discord.TextChannel):
         async with self.bot.db.cursor() as cur:
             await cur.execute("DELETE FROM responder WHERE channel = ?", (channel.id,))
