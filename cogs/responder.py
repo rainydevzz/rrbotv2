@@ -23,3 +23,18 @@ class Responder(discord.Cog):
         async with self.bot.db.cursor() as cur:
             await cur.execute("CREATE TABLE IF NOT EXISTS responder (guild INTEGER, channel INTEGER, trigger TEXT, response TEXT)")
         await self.bot.db.commit()
+
+    @discord.Cog.listener()
+    async def on_message(message):
+        async with self.bot.db.cursor() as cur:
+            await cur.execute(
+                "SELECT guild, channel, trigger, response FROM responder WHERE guild = ?",
+                (message.guild.id,)
+            )
+            results = await cur.fetchall()
+            for res in results:
+                if res[1] == message.channel.id and res[2] == message.content.lower():
+                    return await message.channel.send(res[3])
+
+def setup(bot):
+    bot.add_cog(Responder(bot))
