@@ -13,7 +13,8 @@ class Responder(discord.Cog):
     async def rsetup(self, ctx, trigger_msg, response, channel:discord.TextChannel):
         async with self.bot.db.cursor() as cur:
             await cur.execute("INSERT INTO responder (guild, channel, trigger, response) VALUES (?, ?, ?, ?)", (ctx.guild.id, channel.id, trigger_msg, response))
-            await ctx.respond(f"Responder set up in {channel.mention} <3")
+        await self.bot.db.commit()
+        await ctx.respond(f"Responder set up in {channel.mention} <3")
 
     @discord.Cog.listener()
     async def on_ready(self):
