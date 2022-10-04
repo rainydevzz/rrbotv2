@@ -16,6 +16,12 @@ class Responder(discord.Cog):
         await self.bot.db.commit()
         await ctx.respond(f"Responder set up in {channel.mention} <3")
 
+    @rcmd.command(description="remove a responder by its channel.")
+    async def remove(self, ctx, channel:discord.TextChannel):
+        async with self.bot.db.cursor() as cur:
+            await cur.execute("DELETE FROM responder WHERE channel = ?", (channel.id,))
+        await ctx.respond(f"Responder at {channel.mention} deleted <3")
+
     @discord.Cog.listener()
     async def on_ready(self):
         setattr(self.bot, "db", await aiosqlite.connect("main.sqlite"))
