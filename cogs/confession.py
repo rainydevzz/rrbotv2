@@ -36,11 +36,13 @@ class Confession(discord.Cog):
         async with self.bot.db.cursor() as cur:
             await cur.execute("SELECT channel, logchannel, count FROM confessions WHERE guild = ?", (ctx.guild.id,))
             res = await cur.fetchone()
-            c1, c2, co = res[0], res[1], res[2]
             if res is None:
                 return await ctx.respond("The confession channel has not been set up. :(")
+
             elif c1 != ctx.channel.id:
                 return await ctx.respond("This is not the confession channel. :c")
+
+            c1, c2, co = res[0], res[1], res[2]
             
             em1 = discord.Embed(title=f"Confession {co}", description=confession, color=discord.Color.random())
             em1.timestamp = datetime.now()
