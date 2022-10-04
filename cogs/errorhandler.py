@@ -11,7 +11,7 @@ class ErrorHandler(discord.Cog):
             return await ctx.respond("you do not have permission to run this command. :c")
         
         em = discord.Embed(
-            name="Oh No! An error occured :c",
+            title="Oh No! An error occured :c",
             description=f"```{error}```\n\nFeel free to ping Rainy so he knows about the issue.",
             color=discord.Color.embed_background(theme='dark')
         )
