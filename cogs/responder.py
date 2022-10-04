@@ -41,7 +41,7 @@ class Responder(discord.Cog):
             )
             results = await cur.fetchall()
             for res in results:
-                if res[1] == message.channel.id and res[2] == message.content.lower():
+                if res[1] == message.channel.id and res[2].lower() == message.content.lower():
                     return await message.channel.send(res[3])
 
 def setup(bot):
