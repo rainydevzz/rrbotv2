@@ -17,7 +17,7 @@ class Responder(discord.Cog):
         await self.bot.db.commit()
         await ctx.respond(f"Responder set up in {channel.mention} <3")
 
-    @rcmd.command(description="remove a responder by its channel.")
+    @rcmd.command(description="removes all responders from a channel.")
     @commands.has_permissions(manage_guild=True)
     async def remove(self, ctx, channel:discord.TextChannel):
         async with self.bot.db.cursor() as cur:
@@ -33,7 +33,7 @@ class Responder(discord.Cog):
         await self.bot.db.commit()
 
     @discord.Cog.listener()
-    async def on_message(message):
+    async def on_message(self, message):
         async with self.bot.db.cursor() as cur:
             await cur.execute(
                 "SELECT guild, channel, trigger, response FROM responder WHERE guild = ?",
