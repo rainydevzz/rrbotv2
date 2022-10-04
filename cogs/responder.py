@@ -10,9 +10,10 @@ class Responder(discord.Cog):
     rcmd = discord.SlashCommandGroup(name="responder", description="responder commands")
 
     @rcmd.command()
-    async def rsetup(self, ctx, trigger_msg, response, channel):
+    async def rsetup(self, ctx, trigger_msg, response, channel:discord.TextChannel):
         async with self.bot.db.cursor() as cur:
             await cur.execute("INSERT INTO responder (guild, channel, trigger, response) VALUES (?, ?, ?, ?)", (ctx.guild.id, channel.id, trigger_msg, response))
+            await ctx.respond(f"Responder set up in {channel.mention} <3")
 
     @discord.Cog.listener()
     async def on_ready(self):
