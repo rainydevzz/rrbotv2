@@ -36,8 +36,8 @@ class Responder(discord.Cog):
     async def on_message(self, message):
         async with self.bot.db.cursor() as cur:
             await cur.execute(
-                "SELECT guild, channel, trigger, response FROM responder WHERE guild = ?",
-                (message.guild.id,)
+                "SELECT guild, channel, trigger, response FROM responder WHERE guild = ? AND channel = ?",
+                (message.guild.id, message.channel.id)
             )
             results = await cur.fetchall()
 
