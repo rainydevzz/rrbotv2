@@ -9,6 +9,7 @@ class Tags(discord.Cog):
     @discord.Cog.listener()
     async def on_ready(self):
         setattr(self.bot, "db", await aiosqlite.connect('main.sqlite'))
+        await asyncio.sleep(1)
         async with self.bot.db.cursor() as cur:
             await cur.execute("CREATE TABLE IF NOT EXISTS tags (name TEXT, content TEXT, category TEXT, guild INTEGER)")
         await self.bot.db.commit()
