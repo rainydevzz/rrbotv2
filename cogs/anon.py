@@ -23,6 +23,7 @@ class Anonymous(discord.Cog):
         em = discord.Embed(title="A message for you!", description=message)
         em.set_footer(text="Feel free to click report if this message contains upsetting content.")
         await user.send(embed=em, view=AnonView())
+        await ctx.respond("your message has been sent. <3", ephemeral=True)
 
     @ancmd.command(name="setup")
     async def an_setup(self, ctx, channel:discord.TextChannel):
