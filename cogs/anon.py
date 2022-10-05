@@ -23,3 +23,13 @@ class Anonymous(discord.Cog):
         em = discord.Embed(title="A message for you!", description=message)
         em.set_footer(text="Feel free to click report if this message contains upsetting content.")
         await user.send(embed=em, view=AnonView())
+
+    @ancmd.command(name="setup")
+    async def an_setup(self, ctx, channel:discord.TextChannel):
+        async with self.bot.db.cursor() as cur:
+            await cur.execute("INSERT INTO anon (channel, guild) VALUES (?, ?)", (channel.id, ctx.guild.id))
+        await self.bot.db.commit()
+        await ctx.respond(f"Anon Reports Log set to {channel.mention} <3")
+
+def setup(bot):
+    bot.add_cog(Anonymous(bot))
