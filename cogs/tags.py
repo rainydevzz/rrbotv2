@@ -43,7 +43,7 @@ class Tags(discord.Cog):
             tagList = []
             for r in res:
                 tagList.append(r)
-            em = discord.Embed(name="All Tags", description="".join(tagList, ","))
+            em = discord.Embed(name="All Tags", description="".join(tagList, ", "))
         await ctx.respond(embed=em)
 
     @tcmd.command()
@@ -51,9 +51,20 @@ class Tags(discord.Cog):
         async with self.bot.db.cursor() as cur:
             await cur.execute("SELECT category, name FROM tags WHERE guild = ?", (ctx.guild.id,))
             res = await cur.fetchall()
+            if not res:
+                return await ctx.respond("No category by that name found.")
             cat = res[0][0]
             ls = []
             for r in res:
                 tag = r[1]
                 ls.append(tag)
-            await ctx.respond(ls)
+
+            em = discord.Embed(name=f"Category: {cat}", description="".join(ls, ", "))
+            await ctx.respond(embed=em)
+
+    @tcmd.command()
+    async def remove(self, ctx, tag):
+        async with self.bot.db.cursor() as cur:
+            await cur.execute("DELETE FROM tags WHERE name = ? AND guild = ?", (tag.lower(), ctx.guild.id))
+        await self.bot.db.commit()
+        await ctx.respond(f"Tag {tag} has been deleted if it existed. <3")
