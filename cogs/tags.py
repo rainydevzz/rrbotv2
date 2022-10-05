@@ -69,3 +69,6 @@ class Tags(discord.Cog):
             await cur.execute("DELETE FROM tags WHERE name = ? AND guild = ?", (tag.lower(), ctx.guild.id))
         await self.bot.db.commit()
         await ctx.respond(f"Tag {tag} has been deleted if it existed. <3")
+
+def setup(bot):
+    bot.add_cog(Tags(bot))
