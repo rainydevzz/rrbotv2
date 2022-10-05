@@ -12,7 +12,6 @@ for files in os.listdir("./cogs"):
         bot.load_extension(f"cogs.{cogf}")
         print(f"{cogf} initialized!")
 
-
 @bot.event
 async def on_ready():
     print("logged in")
