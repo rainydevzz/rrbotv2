@@ -20,7 +20,7 @@ class Confession(discord.Cog):
         await self.bot.db.commit()
 
     @conf.command(name="setup")
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def csetup(self, ctx, channel:discord.TextChannel, logchannel:discord.TextChannel):
         async with self.bot.db.cursor() as cursor:
             await cursor.execute("SELECT channel FROM confessions WHERE guild = ?", (ctx.guild.id,))

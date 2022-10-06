@@ -32,6 +32,7 @@ class Anonymous(discord.Cog):
         await ch.send(f"{ctx.author} sent a message to {user}")
 
     @ancmd.command(name="setup")
+    @commands.has_permissions(manage_guild=True)
     async def an_setup(self, ctx, channel:discord.TextChannel):
         async with self.bot.db.cursor() as cur:
             await cur.execute("INSERT INTO anon (channel, guild) VALUES (?, ?)", (channel.id, ctx.guild.id))

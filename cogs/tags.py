@@ -17,6 +17,7 @@ class Tags(discord.Cog):
     tcmd = discord.SlashCommandGroup(name="tags", description="tag commands")
 
     @tcmd.command()
+    @commands.has_permissions(manage_guild=True)
     async def add(self, ctx, name, content, category):
         async with self.bot.db.cursor() as cur:
             await cur.execute(
@@ -64,6 +65,7 @@ class Tags(discord.Cog):
             await ctx.respond(embed=em)
 
     @tcmd.command()
+    @commands.has_permissions(manage_guild=True)
     async def remove(self, ctx, tag):
         async with self.bot.db.cursor() as cur:
             await cur.execute("DELETE FROM tags WHERE name = ? AND guild = ?", (tag.lower(), ctx.guild.id))
