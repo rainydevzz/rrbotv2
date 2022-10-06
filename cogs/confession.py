@@ -38,10 +38,10 @@ class Confession(discord.Cog):
             await cur.execute("SELECT channel, logchannel, count FROM confessions WHERE guild = ?", (ctx.guild.id,))
             res = await cur.fetchone()
             if res is None:
-                return await ctx.respond("The confession channel has not been set up. :(")
+                return await ctx.respond("The confession channel has not been set up. :(", ephemeral=True)
 
             elif c1 != ctx.channel.id:
-                return await ctx.respond("This is not the confession channel. :c")
+                return await ctx.respond("This is not the confession channel. :c", ephemeral=True)
 
             c1, c2, co = res[0], res[1], res[2]
             

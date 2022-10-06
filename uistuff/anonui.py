@@ -2,16 +2,16 @@ import discord
 import aiosqlite
 
 from discord.ui import View, Modal
+from cogs.anon.Anonymous import bot
 
 class AnonView(View): #class for applying
     def __init__(self, db):
-        self.db = await aiosqlite.connect('main.sqlite')
         super().__init__(timeout=None)
     @discord.ui.button(label="Report", custom_id="apply-button", style=discord.ButtonStyle.red)
     async def btn_callback(self, button, interaction: discord.Interaction):
         modal = Modal(title="Report")
         modal.add_item(InputText(label="Reason", style=discord.InputTextStyle.long))
-        async with self.db.cursor() as cur:
+        async with bot.db.cursor() as cur:
             await cur.execute("SELECT channel FROM anon WHERE guild = ?", (interaction.guild_id,))
             res = await cur.fetchone()
             if not res:
