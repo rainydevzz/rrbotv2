@@ -19,7 +19,8 @@ class Plural(discord.Cog):
             await cur.execute("CREATE TABLE IF NOT EXISTS pluraladmin (guild INTEGER, user INTEGER)")
         await self.bot.db.commit()
 
-    @discord.Cog.listener()
+    @pcmd.command()
+    @commands.has_permissions(manage_guild=True)
     async def add(self, ctx, user:discord.Member):
         async with self.bot.db.cursor() as cur:
             await cur.execute("SELECT user FROM integer WHERE guild = ? AND user = ?", (ctx.guild.id, user.id))
@@ -28,3 +29,19 @@ class Plural(discord.Cog):
                 return await ctx.respond("This user has already been added.")
             await cur.execute("INSERT INTO pluraladmin (guild, user) VALUES (?, ?)", (ctx.guild.id, user.id))
             await ctx.respond(f"{member.mention} added to the database. <3")
+
+    @pcmd.command()
+    @commands.has_permissions(manage_guild=True)
+    async def remove(self, ctx, user:discord.Member):
+        async with self.bot.db.cursor() as cur:
+            await cur.execute("DELETE FROM pluraladmin WHERE guild = ? AND user = ?", (ctx.guild.id, user.id))
+        await ctx.respond("User removed if they were in the database.")
+
+    @pcmd.command()
+    async def create(self, ctx, name, prefix):
+        async with self.bot.db.cursor() as cur:
+            await cur.execute("SELECT user FROM pluraladmin WHERE guild = ?", (ctx.guild.id,))
+            res = await cur.fetchone()
+            if not res:
+                return await ctx.respond("You are not in the trusted user database.", ephemeral=True)
+            # continue, create webhook, update db
