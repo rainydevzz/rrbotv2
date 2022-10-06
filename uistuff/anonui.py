@@ -10,6 +10,7 @@ class AnonView(View): #class for applying
     @discord.ui.button(label="Report", custom_id="apply-button", style=discord.ButtonStyle.red)
     async def btn_callback(self, button, interaction: discord.Interaction):
         gid = int(interaction.message.embeds[0].fields[0].value)
+        cnt = interaction.message.embeds[0].description
         modal = Modal(title="Report")
         modal.add_item(InputText(label="Reason", style=discord.InputTextStyle.long))
         async with bot.db.cursor() as cur:
@@ -22,6 +23,7 @@ class AnonView(View): #class for applying
         async def modal_callback(inter:discord.Interaction):
             reason = modal.children[0].value
             em = discord.Embed(title=f"Report From {inter.user}", description=reason)
+            em.add_field(name="Content", value=cnt)
             await channel.send(embed=em)
             await inter.response.send_message("Thank you for your time. Your report will be evaluated.")
             

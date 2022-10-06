@@ -25,6 +25,11 @@ class Anonymous(discord.Cog):
         em.add_field(name="Guild ID", value=ctx.guild.id)
         await user.send(embed=em, view=AnonView())
         await ctx.respond("your message has been sent. <3", ephemeral=True)
+        async with self.bot.db.cursor() as cur:
+            await cur.execute("SELECT channel FROM anon WHERE guild = ?", (ctx.guild.id,))
+            res = await cur.fetchone()
+            ch = self.bot.get_channel(res[0])
+        await ch.send(f"{ctx.author} sent a message to {user}")
 
     @ancmd.command(name="setup")
     async def an_setup(self, ctx, channel:discord.TextChannel):
