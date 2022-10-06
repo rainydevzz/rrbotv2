@@ -9,10 +9,11 @@ class AnonView(View): #class for applying
         super().__init__(timeout=None)
     @discord.ui.button(label="Report", custom_id="apply-button", style=discord.ButtonStyle.red)
     async def btn_callback(self, button, interaction: discord.Interaction):
+        gid = int(interaction.message.embeds[0].fields[0].value)
         modal = Modal(title="Report")
         modal.add_item(InputText(label="Reason", style=discord.InputTextStyle.long))
         async with bot.db.cursor() as cur:
-            await cur.execute("SELECT channel FROM anon WHERE guild = ?", (interaction.guild_id,))
+            await cur.execute("SELECT channel FROM anon WHERE guild = ?", (gid,))
             res = await cur.fetchone()
             if not res:
                 return await interaction.response.send_message("A report channel has not been set up.")
