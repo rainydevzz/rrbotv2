@@ -35,18 +35,20 @@ class Responder(discord.Cog):
     @discord.Cog.listener()
     async def on_message(self, message):
         async with self.bot.db.cursor() as cur:
-            await cur.execute(
-                "SELECT guild, channel, trigger, response FROM responder WHERE guild = ? AND channel = ?",
-                (message.guild.id, message.channel.id)
-            )
-            results = await cur.fetchall()
+            try:
+                await cur.execute(
+                    "SELECT guild, channel, trigger, response FROM responder WHERE guild = ? AND channel = ?",
+                    (message.guild.id, message.channel.id)
+                )
+                results = await cur.fetchall()
 
-            if not results:
-                return
-                
-            for res in results:
-                if res[1] == message.channel.id and res[2].lower() == message.content.lower():
-                    return await message.channel.send(res[3])
+                if not results:
+                    return
+
+                for res in results:
+                    if res[1] == message.channel.id and res[2].lower() == message.content.lower():
+                        return await message.channel.send(res[3])
+            except: return
 
 def setup(bot):
     bot.add_cog(Responder(bot))
