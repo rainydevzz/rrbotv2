@@ -9,8 +9,9 @@ class ErrorHandler(discord.Cog):
     async def on_application_command_error(self, ctx, error):
         gu = self.bot.get_guild(994933726704320534)
         e1 = discord.utils.get(gu.emojis, name="menhera_oops")
+        e2 = discord.utils.get(gu.emojis, name="catcri")
         if isinstance(error, commands.MissingPermissions):
-            return await ctx.respond("you do not have permission to run this command.")
+            return await ctx.respond(f"you do not have permission to run this command. {e2}")
         
         em = discord.Embed(
             title=f"Oh No! An error occured... {e1}",
