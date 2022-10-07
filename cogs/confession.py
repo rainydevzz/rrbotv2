@@ -25,7 +25,7 @@ class Confession(discord.Cog):
         async with self.bot.db.cursor() as cursor:
             await cursor.execute("SELECT channel FROM confessions WHERE guild = ?", (ctx.guild.id,))
             res = await cursor.fetchone()
-            if not res:
+            if res is not None:
                 await cursor.execute("INSERT INTO confessions (channel, count, guild, logchannel) VALUES (?, ?, ?, ?)", (channel.id, 1, ctx.guild.id, logchannel.id))
             else:
                 await cursor.execute("UPDATE confessions SET channel = ?, logchannel = ? WHERE guild = ?", (channel.id, logchannel.id, ctx.guild.id))
