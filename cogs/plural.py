@@ -23,7 +23,7 @@ class Plural(discord.Cog):
             await cur.execute("CREATE TABLE IF NOT EXISTS pluraladmin (guild INTEGER, user INTEGER)")
         await self.bot.db.commit()
 
-    @pcmd.command()
+    @pcmd.command(description="adds a user to the trusted database.")
     @commands.has_permissions(manage_guild=True)
     async def add(self, ctx, user:discord.Member):
         async with self.bot.db.cursor() as cur:
@@ -34,7 +34,7 @@ class Plural(discord.Cog):
             await cur.execute("INSERT INTO pluraladmin (guild, user) VALUES (?, ?)", (ctx.guild.id, user.id))
             await ctx.respond(f"{user.mention} added to the database. <3")
 
-    @pcmd.command()
+    @pcmd.command(description="removes a user from the trusted database.")
     @commands.has_permissions(manage_guild=True)
     async def remove(self, ctx, user:discord.Member):
         async with self.bot.db.cursor() as cur:
@@ -43,7 +43,7 @@ class Plural(discord.Cog):
         await self.bot.db.commit()
         await ctx.respond("User removed if they were in the database.")
 
-    @pcmd.command()
+    @pcmd.command(description="Creates a plural user. Ask an admin for the channel you should set it to!")
     async def create(self, ctx, name, prefix, channel:discord.TextChannel):
         async with self.bot.db.cursor() as cur:
             await cur.execute("SELECT user FROM pluraladmin WHERE guild = ? AND user = ?", (ctx.guild.id, ctx.author.id))
