@@ -24,7 +24,7 @@ class ErrorHandler(discord.Cog):
             color=discord.Color.embed_background(theme='dark')
         )
 
-        await ctx.respond(embed=em)
+        await ctx.respond(embed=em, view=errorui.ErrorView())
 
 def setup(bot):
     bot.add_cog(ErrorHandler(bot))

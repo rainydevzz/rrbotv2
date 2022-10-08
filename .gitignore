@@ -3,3 +3,4 @@ main.sqlite
 main.sqlite-journal
 __pycache__/*
 cogs/__pycache__/*
+uistuff/__pycache__/*
