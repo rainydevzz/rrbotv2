@@ -40,10 +40,10 @@ class Confession(discord.Cog):
             if res is None:
                 return await ctx.respond("The confession channel has not been set up. :(", ephemeral=True)
 
-            elif c1 != ctx.channel.id:
-                return await ctx.respond("This is not the confession channel. :c", ephemeral=True)
-
             c1, c2, co = res[0], res[1], res[2]
+
+            if c1 != ctx.channel.id:
+                return await ctx.respond("This is not the confession channel. :c", ephemeral=True)
             
             em1 = discord.Embed(title=f"Confession {co}", description=confession, color=discord.Color.random())
             em1.timestamp = datetime.now()
