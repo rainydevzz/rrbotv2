@@ -42,7 +42,7 @@ class Responder(discord.Cog):
                 )
                 results = await cur.fetchall()
 
-                if not results:
+                if results is None:
                     return
 
                 for res in results:

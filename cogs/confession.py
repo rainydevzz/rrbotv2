@@ -25,14 +25,14 @@ class Confession(discord.Cog):
         async with self.bot.db.cursor() as cursor:
             await cursor.execute("SELECT channel FROM confessions WHERE guild = ?", (ctx.guild.id,))
             res = await cursor.fetchone()
-            if res is not None:
+            if res is None:
                 await cursor.execute("INSERT INTO confessions (channel, count, guild, logchannel) VALUES (?, ?, ?, ?)", (channel.id, 1, ctx.guild.id, logchannel.id))
             else:
                 await cursor.execute("UPDATE confessions SET channel = ?, logchannel = ? WHERE guild = ?", (channel.id, logchannel.id, ctx.guild.id))
         await self.bot.db.commit()
         await ctx.respond("Confessions Set Up! <3")
 
-    @conf.command(name="confess")
+    @conf.command(name="confess", description="Make a confession. Confessions are logged for mod purposes.")
     async def confess(self, ctx, confession):
         async with self.bot.db.cursor() as cur:
             await cur.execute("SELECT channel, logchannel, count FROM confessions WHERE guild = ?", (ctx.guild.id,))

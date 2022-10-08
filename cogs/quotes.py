@@ -14,10 +14,10 @@ class Quotes(discord.Cog):
                 else:
                     return None
 
-    @discord.slash_command()
+    @discord.slash_command(description="Returns a random quote!")
     async def quote(self, ctx):
         q = await self.get_quote()
-        if not q:
+        if q is None:
             return await ctx.respond("A quote could not be retrieved. Try again later.")
         em = discord.Embed(title="Quote For You! <3", description=f"**{q['content']}**", color=discord.Color.random())
         em.set_footer(text=f"{q['author']}")
