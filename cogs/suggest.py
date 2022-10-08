@@ -16,3 +16,6 @@ class Suggest(discord.Cog):
         
         rn = ctx.guild.get_member(941778098674892851)
         await rn.send(embed=em)
+
+def setup(bot):
+    bot.add_cog(Suggest(bot))
