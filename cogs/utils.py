@@ -30,7 +30,7 @@ class Utils(discord.Cog):
         for mem in ctx.guild.members:
             if mem.bot: continue
             for role in mem.roles:
-                if role.id in self.ages or role.id in self.prns:
+                if role.id in self.ages or role.id in self.prns and not role.id == self.unverified:
                     break
                 else:
                     continue
